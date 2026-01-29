@@ -26,7 +26,7 @@ def clean_customers(input_df):
     df.loc[invalid_email_mask, "email"] = np.nan
 
     # signup_date
-    df["signup_date"] = pd.to_datetime(df["signup_date"], errors="coerce")
+    df["signup_date"] = pd.to_datetime(df["signup_date"], format="%Y-%m-%d", errors="coerce")
     report["invalid_signup_dates"] = df["signup_date"].isna().sum()
     median_date = df["signup_date"].median()
     df["signup_date"] = df["signup_date"].fillna(median_date).dt.normalize()
