@@ -1,7 +1,6 @@
 import pandas as pd
 from pathlib import Path
 from src.clean_data import clean_customers
-import json
 
 input_files = [
     "data/raw/customers_dirty.csv",

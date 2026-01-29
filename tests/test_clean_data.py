@@ -100,18 +100,6 @@ def test_duplicates_removed():
     df_clean, _ = clean_customers(df)
     assert df_clean["email"].nunique() == 1
 
-def test_no_duplicate_emails():
-    df = pd.DataFrame({
-        "full_name": ["A", "B", "C"],
-        "email": ["a@test.com", "b@test.com", "a@test.com"],
-        "signup_date": ["2023-01-01", "2023-01-02", "2023-01-03"],
-        "country": ["FR", "FR", "FR"],
-        "age": [25, 30, 40],
-        "last_purchase_amount": [10, 20, 30],
-        "loyalty_tier": ["BRONZE", "SILVER", "GOLD"]
-    })
-    df_clean, _ = clean_customers(df)
-    assert df_clean["email"].duplicated().sum() == 0
 
 def test_no_missing_values_after_cleaning():
     df = pd.DataFrame({
