@@ -1,6 +1,6 @@
 import pandas as pd
 from pathlib import Path
-from clean_data import clean_customers
+from src.clean_data import clean_customers
 import json
 
 input_files = [
