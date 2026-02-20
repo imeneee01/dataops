@@ -1,18 +1,25 @@
 import pandas as pd
 from pathlib import Path
+import sys
+import os
+
+# Ajouter le répertoire parent au path pour les imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.clean_data import clean_customers
 
+# Utiliser des chemins absolus pour le Docker
+data_dir = Path("/app/data")
 input_files = [
-    "data/raw/customers_dirty.csv",
-    "data/raw/customers_dirty2.csv",
-    "data/raw/customers_dirty3.csv"
+    str(data_dir / "raw" / "customers_dirty.csv"),
+    str(data_dir / "raw" / "customers_dirty2.csv"),
+    str(data_dir / "raw" / "customers_dirty3.csv")
 ]
 
-output_dir = Path("data/processed")
+output_dir = data_dir / "processed"
 output_dir.mkdir(parents=True, exist_ok=True)
 
-report_dir = Path("data/reports")
-report_dir.mkdir(exist_ok=True)
+report_dir = data_dir / "reports"
+report_dir.mkdir(parents=True, exist_ok=True)
 
 for file_path in input_files:
     

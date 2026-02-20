@@ -11,4 +11,5 @@ COPY src ./src
 COPY data ./data
 
 # Commande par défaut
-CMD ["python", "-m", "src.pipeline"]
+ENTRYPOINT ["python", "-m", "src.pipeline"]
+CMD []
