@@ -77,6 +77,10 @@ x-airflow-common:
     RAW_DIR: /opt/airflow/data/raw
     PROCESSED_DIR: /opt/airflow/data/processed
     PIPELINE_IMAGE: customers-pipeline:latest
+    AIRFLOW__METRICS__STATSD_ON: "True"
+    AIRFLOW__METRICS__STATSD_HOST: "statsd-exporter"
+    AIRFLOW__METRICS__STATSD_PORT: "8125"
+    AIRFLOW__METRICS__STATSD_PREFIX: "airflow"
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
@@ -340,6 +344,34 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+
+  statsd-exporter:
+    image: prom/statsd-exporter:latest
+    ports:
+      - "9112:9112"  
+      - "8125:8125/udp"    
+    command:
+      - "--statsd.listen-udp=:8125"
+      - "--web.listen-address=:9112"
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+    depends_on:
+      - statsd-exporter
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    restart: always
 
 volumes:
   postgres-db-volume:

@@ -23,7 +23,7 @@ with DAG(
         task_id="run_pipeline_container",
         image=PIPELINE_IMAGE,
         api_version="auto",
-        auto_remove="never",
+        auto_remove="success",
         docker_url="unix://var/run/docker.sock",
         network_mode="bridge",
         mount_tmp_dir=False,
